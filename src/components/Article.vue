@@ -42,7 +42,7 @@
               <span v-else></span>
             </div>
 
-            <p v-html="reply.content"></p>
+            <p v-html="reply.content" class="replycontent"></p>
           </div>
 
         </div>
@@ -89,13 +89,15 @@
 </script>
 
 <style >
+
   @import url('../assets/markdown-github.css');
   .topbar {
     padding: 10px;
     background-color: #f6f6f6;
     height: 16px;
-    font-size: 12px;
+    font-size: 16px;
     margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   .article:not(:first-child) {
@@ -167,5 +169,11 @@
 
   .markdown-text img {
     width: 92% !important;
+  }
+  .replycontent{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #222;
   }
 </style>

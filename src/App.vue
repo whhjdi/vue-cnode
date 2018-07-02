@@ -26,8 +26,11 @@ export default {
   margin: 0;
   box-sizing: border-box;
 }
+
 #app{
+  height: 100vh;
   background: #e1e1e1;
+  overflow: auto;
 }
 .main{
   width: 80%;

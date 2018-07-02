@@ -1,7 +1,10 @@
 <template>
     <div class="autherinfo">
     <div class="authersummay">
-      <div class="topbar">作者</div>
+      <div class="topbar">作者:
+        <span class="authorname">{{userinfo.loginname}}</span>
+        </div>
+
       <router-link :to="{
                 name: 'user_info',
                 params:{
@@ -9,9 +12,9 @@
                 }
               }">
         <img :src="userinfo.avatar_url" alt="">
-
+        
       </router-link>
-      <!--<span>{{userinfo.loginname}}</span>-->
+      
     </div>
       <div class="recent_topics">
         <div class="topbar">作者最近主题</div>
@@ -142,5 +145,9 @@
 
   .authersummay .topbar {
     margin-top: 0px;
+  }
+  .authorname{
+    text-decoration: none;
+    padding-bottom: 20px;
   }
 </style>

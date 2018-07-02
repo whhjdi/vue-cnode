@@ -1,8 +1,8 @@
 <template>
     <div class="header clearfix">
-      <a href="#">
-        <img src="../assets/cnodejs_light.svg" alt="logo">
-      </a>
+        <router-link :to="{name:'root'}">
+          <img src="../assets/cnodejs_light.svg" alt="logo">
+        </router-link>
       <div class="wrapper">
         <ul class="clearfix">
           <li><a href="">首页</a></li>

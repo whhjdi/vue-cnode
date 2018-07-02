@@ -111,5 +111,8 @@
     color: #094E99;
     text-decoration: none;
   }
-
+.loading {
+    text-align: center;
+    padding-top: 300px;
+  }
 </style>
