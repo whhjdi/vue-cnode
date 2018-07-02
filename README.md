@@ -1,12 +1,13 @@
 # cnode
 
 ## 组件
-Header 头部
-PosltList 列表
-Article 文章的详情页
-SlideBar 侧边栏
-UserInfo 用户个人信息
-Psgination 分页组件
+1. Header 头部
+2. PosltList 列表
+3. Article 文章的详情页
+4. SlideBar 侧边栏
+5. UserInfo 用户个人信息
+6. Psgination 分页组件
+7. 暂未开发其他页面
 
 ## 技术栈
 vue.js计算属性
