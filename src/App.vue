@@ -21,9 +21,14 @@ export default {
 </script>
 
 <style>
-/* body{
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+#app{
   background: #e1e1e1;
-} */
+}
 .main{
   width: 80%;
   margin: 0 auto;

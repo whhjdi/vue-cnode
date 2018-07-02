@@ -13,7 +13,7 @@
       </router-link>
       <!--<span>{{userinfo.loginname}}</span>-->
     </div>
-      <div class="recent_topic">
+      <div class="recent_topics">
         <div class="topbar">作者最近主题</div>
         <ul>
           <li v-for="item in topiclimit">
@@ -97,6 +97,7 @@
   }
   li{
     padding: 3px 0 ;
+    list-style: none
   }
   .recent_replies ul, .recent_topics ul {
     margin-top: 0px;
