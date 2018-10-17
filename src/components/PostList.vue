@@ -1,104 +1,134 @@
 <template>
-    <div class="PostList">
-      <!--loading动画-->
-      <div class="loading" v-if="isLoading">
-        <img src="../assets/loading.gif" alt="loading">
-      </div>
-      <div class="posts" v-else>
-        <ul>
-          <li>
-            <div class="toobar">
-            <span>全部</span>
-            <span>精华</span>
-            <span>分享</span>
-            <span>问答</span>
-            <span>招聘</span>
-            </div>
-          </li>
-          <li v-for="post in posts">
-            <!--头像-->
-            <img :src="post.author.avatar_url" alt="">
-            <!--回复数/浏览数-->
-            <span class="allcount">
-              <span class="reply_count">{{post.reply_count}}</span>
-              /{{post.visit_count}}
-            </span>
-            <!--帖子分类-->
-            <span :class="[{
+  <div class="PostList">
+    <!--loading动画-->
+    <div class="loading" v-if="isLoading">
+      <Loading></Loading>
+      <!-- <img src="../assets/loading.gif" alt="loading"> -->
+    </div>
+    <div class="posts" v-else>
+      <ul>
+        <li>
+          <div class="toobar">
+            <span v-for="(list,index) in lists" :key="list.tab" :class="{active:index===clicked}" @click="getData(list.tab,index)">{{list.text}}</span>
+          </div>
+        </li>
+        <li v-for="post in posts" :key="post.id">
+          <!--头像-->
+          <img :src="post.author.avatar_url" alt="">
+          <!--回复数/浏览数-->
+          <span class="allcount">
+            <span class="reply_count">{{post.reply_count}}</span>
+            /{{post.visit_count}}
+          </span>
+          <!--帖子分类-->
+          <span :class="[{
             put_good:post.good===true,
             put_top:post.top===true,
             topiclist_tab:(post.good!==true&&post.top!==true)
             }]">
-              <span>{{post | tabFormatter}}</span>
-            </span>
-            <!--标题-->
-            <router-link :to="{
+            <span>{{post | tabFormatter}}</span>
+          </span>
+          <!--标题-->
+          <router-link :to="{
               name: 'post_content',
               params:{
                 id: post.id,
                 name: post.author.loginname
               }
             }">
-              <span>{{post.title}}</span>
-            </router-link>
+            <span>{{post.title}}</span>
+          </router-link>
 
-            <!--最后回复-->
-            <span class="last_reply">
-              {{post.last_reply_at | formatDate}}
-            </span>
+          <!--最后回复-->
+          <span class="last_reply">
+            {{post.last_reply_at | formatDate}}
+          </span>
 
-          </li>
-          <li>
-            <pagination @handle="renderList"></pagination>
-          </li>
-        </ul>
-      </div>
+        </li>
+        <li>
+          <Page :total="1000" show-elevator @on-change="renderList" />
+          <!-- <pagination @handle="renderList"></pagination> -->
+        </li>
+      </ul>
     </div>
+  </div>
 </template>
 
 <script>
-import pagination from './Pagination'
-    export default {
-        name: "PostList",
-      data(){
-          return {
-            isLoading: false,
-            posts:[],
-            postpage:1
-          }
-      },
-      components:{
-        pagination
-      },
-      methods:{
-        getData(){
-          this.$http.get('https://cnodejs.org/api/v1/topics',{
-            params:{
-              page:this.postpage,
-              limit:20
+  // import pagination from './Pagination'
+  import Loading from "./Loading.vue";
+  import { Page } from "iview";
+  export default {
+    name: "PostList",
+    data() {
+      return {
+        isLoading: false,
+        clicked: 0,
+        tab: "",
+        posts: [],
+        postpage: 1,
+        lists: [
+          { name: "all", text: "全部", tab: "" },
+          { name: "good", text: "精华", tab: "good" },
+          { name: "share", text: "分享", tab: "share" },
+          { name: "ask", text: "问答", tab: "ask" },
+          { name: "job", text: "招聘", tab: "job" }
+        ]
+      };
+    },
+    components: {
+      Page,
+      Loading
+    },
+    methods: {
+      getData(tab, index) {
+        this.$http
+          .get("https://cnodejs.org/api/v1/topics", {
+            params: {
+              page: this.postpage,
+              limit: 20,
+              tab
             }
-          }).then((res)=>{
-            this.isLoading = false
-            this.posts = res.data.data
-            console.log(this.posts )
-          }).catch((err)=>{
-            console.log(err)
           })
-        },
-        renderList(value){
-          this.postpage = value
-          this.getData()
-        }
+          .then(res => {
+            this.tab = tab;
+            this.isLoading = false;
+            this.posts = res.data.data;
+            this.clicked = index;
+            console.log(this.posts);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       },
-      beforeMount(){
-          this.isLoading=true
-          this.getData()
+      renderList(value) {
+        this.postpage = value;
+        this.getData(this.tab, 0);
       }
+    },
+    created() {
+      this.isLoading = true;
+      this.getData("", 0);
     }
+  };
 </script>
 
 <style scoped>
-  .PostList{
+  @media (max-width: 1344px) {
+    .PostList {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+  }
+  @media (max-width: 768px) {
+    .PostList,
+    .posts {
+      margin-left: 0;
+      margin-right: 0;
+      margin-top: 0 !important;
+    }
+  }
+  .PostList {
     background-color: #e1e1e1;
   }
   .posts {
@@ -110,7 +140,6 @@ import pagination from './Pagination'
     width: 30px;
     vertical-align: middle;
   }
-
   ul {
     list-style: none;
     width: 100%;
@@ -121,7 +150,8 @@ import pagination from './Pagination'
   ul li:not(:first-child) {
     padding: 9px;
     font-size: 15px;
-    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, sans-serif !important;
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma,
+      "Hiragino Sans GB", STHeiti, sans-serif !important;
     font-weight: 400;
     background-color: white;
     color: #333;
@@ -129,7 +159,7 @@ import pagination from './Pagination'
   }
 
   li:not(:first-child):hover {
-    background: #f5f5f5;;
+    background: #f5f5f5;
   }
 
   li:last-child:hover {
@@ -152,7 +182,8 @@ import pagination from './Pagination'
     font-size: 14px;
   }
 
-  .put_good, .put_top {
+  .put_good,
+  .put_top {
     background: #80bd01;
     padding: 2px 4px;
     border-radius: 3px;
@@ -197,10 +228,16 @@ import pagination from './Pagination'
     line-height: 40px;
     margin: 0 10px;
     cursor: pointer;
+    padding: 2px 3px;
+    border-radius: 2px;
   }
-
+  .active {
+    background: #80bd01;
+    color: #fff !important;
+  }
   .toobar span:hover {
-    color: #9e78c0;
+    background: #80bd01;
+    color: #fff;
   }
 
   a {

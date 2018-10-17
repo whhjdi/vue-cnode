@@ -19,7 +19,7 @@
       <div class="recent_topics">
         <div class="topbar">作者最近主题</div>
         <ul>
-          <li v-for="item in topiclimit">
+          <li v-for="item in topiclimit" :key="item.id">
             <router-link :to="{
             name: 'post_content',
             params:{
@@ -35,7 +35,7 @@
       <div class="recent_replies">
         <div class="topbar">作者最近回复</div>
         <ul>
-          <li v-for="item in replieslimit">
+          <li v-for="item in replieslimit" :key="item.id">
             <router-link :to="{
             name: 'post_content',
             params:{
@@ -90,6 +90,11 @@
 </script>
 
 <style scoped>
+@media (max-width: 980px) {
+  .autherinfo{
+    display: none;
+  }
+}
   .authersummay, .recent_replies, .recent_topics {
     background-color: #fff;
   }

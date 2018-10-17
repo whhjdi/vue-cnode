@@ -1,96 +1,115 @@
 <template>
-    <div class="article">
-      <div v-if="isLoading" class="loading">
-        <img src="../assets/loading.gif" alt="loading">
+  <div class="article">
+    <div v-if="isLoading" class="loading">
+      <!-- <img src="../assets/loading.gif" alt="loading"> -->
+      <Loading></Loading>
+    </div>
+    <div v-else>
+      <div class="topic_header">
+        <div class="topic_title">{{post.title}}</div>
+        <ul>
+          <li>发布于: {{post.create_at | formatDate}}</li>
+          <li>作者: {{post.author.loginname}}</li>
+          <li>{{post.visit_count}}次浏览</li>
+          <li>来自{{post | tabFormatter}}</li>
+        </ul>
+        <div v-html="post.content" class="topic_content"></div>
       </div>
-      <div v-else>
-        <div class="topic_header">
-          <div class="topic_title">{{post.title}}</div>
-          <ul>
-            <li>发布于: {{post.create_at | formatDate}}</li>
-            <li>作者: {{post.author.loginname}}</li>
-            <li>{{post.visit_count}}次浏览</li>
-            <li>来自{{post | tabFormatter}}</li>
-          </ul>
-          <div v-html="post.content" class="topic_content"></div>
-        </div>
-        <div id="reply">
-          <div class="topbar">回复</div>
-          <div v-for="(reply, index) in post.replies" class="replySec">
-            <div class="replyUp">
-              <router-link :to="{
+      <div id="reply">
+        <div class="topbar">回复</div>
+        <div v-for="(reply, index) in post.replies" class="replySec" :key="index">
+          <div class="replyUp">
+            <router-link :to="{
                 name: 'user_info',
                 params:{
                   name:reply.author.loginname,
                 }
               }">
-                <img :src="reply.author.avatar_url" alt="">
-              </router-link>
-              <router-link :to="{
+              <img :src="reply.author.avatar_url" alt="">
+            </router-link>
+            <router-link :to="{
                 name: 'user_info',
                 params:{
                   name:reply.author.loginname,
                 }
               }">
-                <span>{{reply.author.loginname}}</span>
-              </router-link>
+              <span>{{reply.author.loginname}}</span>
+            </router-link>
 
-              <span>{{index+1}}楼</span>
-              <span v-if="reply.ups.length>0">
+            <span>{{index+1}}楼</span>
+            <span v-if="reply.ups.length>0">
               赞{{reply.ups.length}}
             </span>
-              <span v-else></span>
-            </div>
-
-            <p v-html="reply.content" class="replycontent"></p>
+            <span v-else></span>
           </div>
 
+          <p v-html="reply.content" class="replycontent"></p>
         </div>
 
-
       </div>
+
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "Article",
-      data(){
-          return {
-            isLoading: false,
-            post:{},
-          }
-      },
-      methods:{
-          getArticleData(){
-            this.$http.get(`https://cnodejs.org/api/v1/topic/${this.$route.params.id}`)
-              .then((res)=>{
-                if(res.data.success === true){
-                  this.isLoading = false
-                  this.post = res.data.data
-                }
+  import Loading from "./Loading.vue";
+  export default {
+    name: "Article",
+    components: {
+      Loading
+    },
+    data() {
+      return {
+        isLoading: false,
+        post: {}
+      };
+    },
+    methods: {
+      getArticleData() {
+        this.$http
+          .get(`https://cnodejs.org/api/v1/topic/${this.$route.params.id}`)
+          .then(res => {
+            if (res.data.success === true) {
+              setTimeout(() => {
+                this.isLoading = false;
+              }, 300);
 
-              })
-              .catch((err)=>{
-                console.log(err)
-              })
-          }
-      },
-      beforeMount(){
-          this.isLoading = true
-          this.getArticleData()
-      },
-      watch:{
-          '$route'(to,from){
-            this.getArticleData()
-          }
+              this.post = res.data.data;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
+    beforeMount() {
+      this.isLoading = true;
+      this.getArticleData();
+    },
+    watch: {
+      $route(to, from) {
+        this.getArticleData();
       }
     }
+  };
 </script>
 
 <style >
-
-  @import url('../assets/markdown-github.css');
+  @import url("../assets/markdown-github.css");
+  @media (max-width: 980px) {
+    .article:not(:first-child) {
+      margin-left: 20px;
+      margin-right: 20px !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .article:not(:first-child) {
+      margin-left: 0;
+      margin-right: 0 !important;
+      margin-top: 0 !important;
+    }
+  }
   .topbar {
     padding: 10px;
     background-color: #f6f6f6;
@@ -105,7 +124,8 @@
     margin-top: 15px;
   }
 
-  #reply, .topic_header {
+  #reply,
+  .topic_header {
     background-color: #fff;
   }
 
@@ -120,14 +140,15 @@
     bottom: -9px;
   }
 
-  #reply a, #reply span {
-    font-size: 13px;
+  #reply a,
+  #reply span {
+    font-size: 12px;
     color: #666;
     text-decoration: none;
   }
-  .replySec{
-    border-bottom:1px solid #e5e5e5;
-    padding:0 10px;
+  .replySec {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0 10px;
   }
 
   .loading {
@@ -164,16 +185,20 @@
 
   .topic_content {
     border-top: 1px solid #e5e5e5;
-    padding: 0 10px;
+    padding: 5px 10px;
   }
 
   .markdown-text img {
     width: 92% !important;
   }
-  .replycontent{
+  .replycontent {
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: 16px;
     color: #222;
+  }
+  .loading {
+    width: 100%;
+    margin: 0 auto;
   }
 </style>

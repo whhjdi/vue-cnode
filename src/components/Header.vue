@@ -1,63 +1,74 @@
 <template>
-    <div class="header clearfix">
-        <router-link :to="{name:'root'}">
-          <img src="../assets/cnodejs_light.svg" alt="logo">
-        </router-link>
-      <div class="wrapper">
-        <ul class="clearfix">
-          <li><a href="">首页</a></li>
-          <li><a href="">新手入门</a></li>
-          <li><a href="">API</a></li>
-          <li><a href="">关于</a></li>
-          <li><a href="">注册</a></li>
-          <li><a href="">登录</a></li>
-        </ul>
-      </div>
-
+  <div class="header clearfix">
+    <router-link :to="{name:'root'}">
+      <img src="../assets/cnodejs_light.svg" alt="logo">
+    </router-link>
+    <div class="wrapper">
+      <ul class="clearfix">
+        <li><a href="">首页</a></li>
+        <li><a href="">新手入门</a></li>
+        <li><a href="">API</a></li>
+        <li><a href="">关于</a></li>
+        <li><router-link :to="{name:'signup'}">注册</router-link></li>
+        <li><router-link :to="{name:'login'}">登录</router-link></li>
+      </ul>
     </div>
+
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "Header"
-    }
+  export default {
+    name: "Header"
+  };
 </script>
 
 <style scoped>
-  .clearfix::after{
-    content: '';
+@media(max-width: 580px){
+  .header{
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media(max-width: 374px){
+  .header li{
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+  .clearfix::after {
+    content: "";
     display: block;
     clear: both;
   }
-  .header{
-    background-color:#5a5555;
-    height: 50px;
+  .header {
+    background-color: #444444;
+    /* height: 50px; */
   }
-  .header>a{
+  .header > a {
     display: block;
     float: left;
     width: 120px;
     height: 34px;
     line-height: 34px;
-    margin-left: 50px;
-    margin-top:8px;
+    margin-left: 20px;
+    margin-top: 8px;
   }
-  .wrapper{
+  .wrapper {
     float: right;
   }
 
-  ul{
+  ul {
     list-style: none;
   }
-  li{
+  li {
     float: left;
-    padding: 15px 15px ;
+    padding: 15px 15px;
   }
-  a{
+  a {
     text-decoration: none;
     color: #ccc;
     font-size: 13px;
     line-height: 20px;
-
   }
 </style>

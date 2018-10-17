@@ -3,7 +3,7 @@
         <button @click="changeBtn">首页</button>
         <button @click="changeBtn">上一页</button>
         <button class="pagebtn" v-if="prevbtn">...</button>
-        <button v-for="btn in pagebtns" 
+        <button v-for="(btn,index) in pagebtns" :key="index"
         :class="['pagebtn',{currentPage:btn===currentpage},]"
         @click="changeBtn(btn)">
             {{btn}}
