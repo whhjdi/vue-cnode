@@ -1,13 +1,13 @@
 # cnode
-
+使用cnode社区的开放API实现对cnode社区的基本功能的实现，使用媒体查询适配移动端
 ## 组件
 1. Header 头部
 2. PosltList 列表
 3. Article 文章的详情页
 4. SlideBar 侧边栏
 5. UserInfo 用户个人信息
-6. Psgination 分页组件
-7. 暂未开发其他页面
+6. Psgination 分页组件 (替换为iview的page组件)
+7. Loading 组件 新增
 
 ## 技术栈
 vue.js计算属性

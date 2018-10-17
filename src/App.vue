@@ -28,7 +28,7 @@
 
   #app {
     height: 100vh;
-    background: #e6e3e3;
+    background: #e1e1e1;
     overflow: auto;
   }
   .main {
